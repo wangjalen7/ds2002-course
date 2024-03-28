@@ -4,6 +4,8 @@ Container images can be built by hand or by using automated tools. In this lab y
 
 > **NOTE**: To complete this lab you must first have forked this repository: https://github.com/nmagee/fastapi-demo. All work you complete in this lab will be using code from your fork of the repository, and pushing your changes there.
 
+Find a bug in this lab? Email nem2p@virginia.edu.
+
 ## Building Docker Images with a `Dockerfile`
 
 Docker allows you to run a container interactively, add software, edit/configure files and settings, and import code (among many other things). However, this approach takes time and is not always consistent.
@@ -21,7 +23,7 @@ The better method for creating container images is to automate it using a `Docke
 
 ## Automating Builds using GitHub Actions
 
-2. **Edit your workflow**
+2. **Review your workflow**
    
     Open the `.github/workflows/build.yml` file and read its contents. There's a lot more to point out here, but these are the essential blocks of logic:
 
@@ -45,7 +47,16 @@ The better method for creating container images is to automate it using a `Docke
         branches: [ main ]
     ```
 
-    Add this change to your repository, commit it, but do not yet push back to GitHub.
+    **NOTE** Students have helped identify a small bug in the build script. Find this
+    line in your `.github/workflows/build.yaml` file:
+
+    ```
+      IMAGE_NAME: ${{ github.actor }}/fastapi-demo
+    ```
+
+    and remove the `${{ github.actor }}` value. Replace it with your GitHub username in lowercase.
+
+    Add these changes to your repository, commit the file, but do not yet push back to GitHub.
 
 4. **Create a GitHub Personal Access Token (PAT)**
 
@@ -72,17 +83,17 @@ The better method for creating container images is to automate it using a `Docke
 
     A. Click on the SETTINGS tab.
 
-    B. Go to the SECRETE AND VARIABLES section. Select ACTIONS.
+    B. Go to the SECRETS AND VARIABLES section. Select ACTIONS.
 
     C. Create a NEW REPOSITORY SECRET. Give it the name `GHCR_PAT`. For the secret value, paste in the PAT token you created above.
 
-    D. Your GitHub Action is now ready to use this secret.
+    D. Your GitHub Action workflow is now ready to use this secret.
 
 6. **Enable workflows for your repository**
 
     Finally, click on the ACTIONS tab of your repository. This is where you can see past runs of your workflow as well as current/pending runs.
 
-    Workflows have been disabled by default on your fork of the repository. Click the button to enable workflows.
+    Workflows have been disabled by default on your fork of the repository. **Click the button to enable workflows**.
 
 ## Test your build
 
@@ -120,7 +131,9 @@ Your GitHub Action is now building container images automatically. Let's connect
 
 ## Make Changes, Push, and Test
 
-Now edit the `app/main.py` file. Add an additional endpoint to return data of some kind. Add, commit, and change your changes.
+Now edit the `app/main.py` file. Add an additional endpoint to return data of some kind. Verify that your application runs smoothly by running `./preview.sh` and does not trigger errors.
+
+Then add, commit, and change your changes.
 
 Verify that your changes trigger a build, and wait for the build to complete.
 
